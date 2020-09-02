@@ -30,6 +30,11 @@ async function bootstrap() {
   Logger.log(`🚀  Server ready at http://localhost:${port} `, 'ServerStarted');
   // Run server on port
   await app.listen(port);
+  // show error if any unhandledRejection is arise
+  process.on('unhandledRejection', (reason, p) => {
+    Logger.log(`🚀 Unhandled Rejection at: Promise:${p} `, 'ServerStoped');
+    Logger.log(`🚀 reason :${reason} `, 'ServerStoped');
+  });
 }
 
 bootstrap();
