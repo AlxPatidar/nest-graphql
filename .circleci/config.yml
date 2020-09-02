@@ -31,7 +31,7 @@ jobs:
       - run: echo Build successfully.
 workflows:
   version: 2.1
-  nest-mongodb:
+  nest-graphql:
     jobs:
       - development:
           # filter branch and change branch for push code for test job

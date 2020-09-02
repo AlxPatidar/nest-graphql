@@ -9,8 +9,7 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AppService } from './app.service';
-import { Logger } from '../shared/Logger/logger.decorator';
-import { LoggerService } from '../shared/Logger/logger.service';
+import { Logger, LoggerService } from '@Logger/logger';
 
 @Controller()
 export class AppController {
