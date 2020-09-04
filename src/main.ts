@@ -15,9 +15,7 @@ const port = process.env.PORT || 4001;
 
 async function bootstrap() {
   // Create nestFactory instance for make server instance
-  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
-    logger: false,
-  });
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
   // Server static contain
   app.useStaticAssets(join(__dirname, '..', 'public'));

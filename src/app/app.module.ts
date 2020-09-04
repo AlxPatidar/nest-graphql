@@ -1,11 +1,14 @@
 import { Module } from '@nestjs/common';
 import { TypegooseModule } from 'nestjs-typegoose';
+import { GraphQLModule } from '@nestjs/graphql';
+import { join } from 'path';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { LoggerModule } from '@Logger/logger.module';
 import { ConfigModule } from '../config/config.module';
 import { ApiModule } from '../api/api.module';
+import { GraphqlModule } from '../graphql/graphql.module';
 import {
 	EnvironmentModule,
 	EnvironmentService,
@@ -15,8 +18,13 @@ import { MongoModule, MongoService, IMongoSecret } from '../config/mongo/mongo';
 @Module({
 	imports: [
 		ApiModule,
-		LoggerModule.forRoot(),
+		GraphqlModule,
 		ConfigModule,
+		LoggerModule.forRoot(),
+		GraphQLModule.forRoot({
+			autoSchemaFile: join(process.cwd(), 'src/graphql/schema.gql'),
+			playground: true
+		}),
 		TypegooseModule.forRootAsync({
 			imports: [EnvironmentModule, MongoModule],
 			inject: [EnvironmentService, MongoService],
