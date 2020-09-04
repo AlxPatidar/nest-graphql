@@ -5,6 +5,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { LoggerModule } from '@Logger/logger.module';
 import { ConfigModule } from '../config/config.module';
+import { ApiModule } from '../api/api.module';
 import {
 	EnvironmentModule,
 	EnvironmentService,
@@ -13,6 +14,7 @@ import { MongoModule, MongoService, IMongoSecret } from '../config/mongo/mongo';
 
 @Module({
 	imports: [
+		ApiModule,
 		LoggerModule.forRoot(),
 		ConfigModule,
 		TypegooseModule.forRootAsync({
