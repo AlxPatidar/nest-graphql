@@ -11,19 +11,22 @@ export class UserResolver {
 
 	@Query(returns => User)
 	async user(@Args('id') id: string): Promise<User> {
-		const recipe = await this.userService.findOneById(id);
-		return recipe;
+		return await this.userService.findOneById(id);
 	}
 
 	@Query(returns => [User])
 	users(@Args() usersArgs: UserArgs): Promise<User[]> {
 		return this.userService.findAll(usersArgs);
 	}
+
+	@Mutation(() => User)
+	public async createUser(@Args('user') createUserArgs: CreateUserArgs) {
+		return await this.userService.createUser(createUserArgs);
+	}
+
 	@Mutation(() => Boolean)
-	public async createUser(
-		@Args('user') createUserArgs: CreateUserArgs
-	) {
-		console.log({createUserArgs })
-		return true
+	public async deleteUser(@Args('id') id: string): Promise<Boolean> {
+		await this.userService.deleteUser(id);
+		return true;
 	}
 }

@@ -21,9 +21,12 @@ export class Comment {
 
   @Field(type => Date)
   updatedAt: Date;
+}
 
+@ObjectType()
+export class CommentDetail extends Comment {
   @Field(type => Post, { name: 'post' })
-  comments: [Post];
+  post: Post;
 
   @Field(type => User, { name: 'user' })
   user: User

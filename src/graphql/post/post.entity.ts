@@ -22,10 +22,13 @@ export class Post {
   @IsOptional()  
   @Field(type => String, { nullable: true })
   body?: string;
+}
 
+@ObjectType()
+export class PostDetail extends Post {
   @Field(type => [Comment], { name: 'comments' })
-  comments?: [Comment];
+  comments: [Comment];
 
   @Field(type => User, { name: 'user' })
-  user?: User
+  user: User
 }

@@ -10,24 +10,31 @@ import {
 @InputType()
 export class LatLongArgs {
 	@Field()
+	@IsNotEmpty({ message: 'Lat is required' })
 	lat: number;
 
 	@Field()
+	@IsNotEmpty({ message: 'Long is required' })
 	long: number;
 }
 
 @InputType()
 export class AddressArgs {
-	@Field({ nullable: true })
-	suite?: string;
-	@Field({ nullable: true })
-	street?: string;
-	@Field({ nullable: true })
-	city?: string;
-	@Field({ nullable: true })
-	zipcode?: string;
-	@Field({ nullable: true })
-	geo?: LatLongArgs;
+	@IsNotEmpty({ message: 'Street is required' })
+	@Field()
+	street: string;
+
+	@IsNotEmpty({ message: 'City is required' })
+	@Field()
+	city: string;
+
+	@IsNotEmpty({ message: 'zipcode is required' })
+	@Field()
+	zipcode: string;
+
+	@IsNotEmpty({ message: 'Geo-Location is required' })
+	@Field()
+	geo: LatLongArgs;
 }
 
 
@@ -42,12 +49,14 @@ export class CreateUserArgs {
 	@IsEmail()
 	email: string;
 
-	@Field({ nullable: true })
-	website?: string;
+	@Field()
+	@IsNotEmpty({ message: 'Website is required' })
+	website: string;
 
-	@Field({ nullable: true })
-	phone?: string;
+	@Field()
+	@IsNotEmpty({ message: 'Phone is required' })
+	phone: string;
 
-	@Field({ nullable: true })
-	address?: AddressArgs;
+	@Field()
+	address: AddressArgs;
 }

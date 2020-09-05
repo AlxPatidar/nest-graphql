@@ -54,9 +54,4 @@ export class User {
 
   @Field(type => Address)
   address: Address;
-
-  @Field(type => String, { nullable: true })
-  body?: string;
-
-  posts: [Post];
 }

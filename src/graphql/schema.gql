@@ -29,10 +29,18 @@ type User {
   website: String!
   phone: String!
   address: Address!
-  body: String
 }
 
 type Comment {
+  _id: String!
+  postId: String!
+  userId: String!
+  comment: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type CommentDetail {
   _id: String!
   postId: String!
   userId: String!
@@ -49,24 +57,35 @@ type Post {
   updatedAt: DateTime!
   title: String!
   body: String
+}
+
+type PostDetail {
+  _id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  title: String!
+  body: String
   comments: [Comment!]!
   user: User!
 }
 
 type Query {
-  post(id: String!): Post!
-  posts(skip: Int = 0, take: Int = 25): [Post!]!
+  post(id: String!): PostDetail!
+  posts(skip: Int = 0, take: Int = 25): [PostDetail!]!
   hello: String!
   user(id: String!): User!
   users(skip: Int = 0, take: Int = 25): [User!]!
-  comment(id: String!): Comment!
-  comments(skip: Int = 0, take: Int = 25): [Comment!]!
+  comment(id: String!): CommentDetail!
+  comments(skip: Int = 0, take: Int = 25): [CommentDetail!]!
 }
 
 type Mutation {
-  createPost(post: CreatePostArgs!): Boolean!
-  createUser(user: CreateUserArgs!): Boolean!
-  createComment(comment: CreateCommentArgs!): Boolean!
+  createPost(post: CreatePostArgs!): Post!
+  deletePost(id: String!): Boolean!
+  createUser(user: CreateUserArgs!): User!
+  deleteUser(id: String!): Boolean!
+  createComment(comment: CreateCommentArgs!): Comment!
+  deleteComment(id: String!): Boolean!
 }
 
 input CreatePostArgs {
@@ -78,17 +97,16 @@ input CreatePostArgs {
 input CreateUserArgs {
   name: String!
   email: String!
-  website: String
-  phone: String
-  address: AddressArgs
+  website: String!
+  phone: String!
+  address: AddressArgs!
 }
 
 input AddressArgs {
-  suite: String
-  street: String
-  city: String
-  zipcode: String
-  geo: LatLongArgs
+  street: String!
+  city: String!
+  zipcode: String!
+  geo: LatLongArgs!
 }
 
 input LatLongArgs {
