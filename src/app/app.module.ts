@@ -58,8 +58,6 @@ import { MongoModule, MongoService, IMongoSecret } from '../config/mongo/mongo';
 		}),
 	],
 	controllers: [AppController],
-	providers: [
-		AppService,
-	],
+	providers: [AppService],
 })
 export class AppModule {}
