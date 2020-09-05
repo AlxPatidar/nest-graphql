@@ -1,4 +1,6 @@
-import { Resolver, Query, Args, Mutation } from '@nestjs/graphql';
+import { Inject } from '@nestjs/common';
+import { Resolver, Query, Args, Mutation, Subscription } from '@nestjs/graphql';
+import { PubSubEngine } from 'graphql-subscriptions';
 
 import { CommentService } from './comment.service';
 import { CommentsArgs } from './dto/comment.args';
@@ -7,7 +9,10 @@ import { CreateCommentArgs } from './dto/create-comment.args';
 
 @Resolver('Comment')
 export class CommentResolver {
-	constructor(private readonly commentService: CommentService) {}
+	constructor(
+		private readonly commentService: CommentService,
+		@Inject('PUB_SUB') private pubSub: PubSubEngine
+	) {}
 
 	/*
 	 * Comment Resolver
@@ -32,6 +37,7 @@ export class CommentResolver {
 	public async createComment(
 		@Args('comment') createCommentArgs: CreateCommentArgs
 	): Promise<Comment> {
+		this.pubSub.publish('commentAdded', { 'commentAdded': { postId: "postId"} })
 		return await this.commentService.create(createCommentArgs);
 	}
 
@@ -40,5 +46,14 @@ export class CommentResolver {
 	public async deleteComment(@Args('id') id: string): Promise<Boolean> {
 		await this.commentService.deleteComment(id);
 		return true;
+	}
+
+	// call subscription on create new comment
+	@Subscription(returns => Comment, {
+		name: 'commentAdded',
+		 filter: (payload, variables) => payload.commentAdded.postId === variables.postId,
+	})
+	public async commentAdded(@Args('postId') postId: string) {
+		return this.pubSub.asyncIterator('commentAdded');
 	}
 }

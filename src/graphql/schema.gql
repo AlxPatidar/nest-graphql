@@ -119,3 +119,7 @@ input CreateCommentArgs {
   postId: String!
   comment: String!
 }
+
+type Subscription {
+  commentAdded(postId: String!): Comment!
+}

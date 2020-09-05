@@ -27,7 +27,10 @@ import { MongoModule, MongoService, IMongoSecret } from '../config/mongo/mongo';
 		// GraphQLModule for get graphql based function like playground
 		GraphQLModule.forRoot({
 			autoSchemaFile: join(process.cwd(), 'src/graphql/schema.gql'),
+			// enable playground for /graphql endpoint
 			playground: true,
+			// for enable subscriptions
+			installSubscriptionHandlers: true,
 		}),
 		// use typegoose for type based schema or database interaction
 		TypegooseModule.forRootAsync({
@@ -55,6 +58,8 @@ import { MongoModule, MongoService, IMongoSecret } from '../config/mongo/mongo';
 		}),
 	],
 	controllers: [AppController],
-	providers: [AppService],
+	providers: [
+		AppService,
+	],
 })
 export class AppModule {}
