@@ -15,11 +15,18 @@ export class PostService {
 		@InjectModel(CommentSchema) protected readonly commentRepo: CommentModel
 	) {}
 
+	/*
+	 * Post service used for real business logic or posts collection interation
+	 */
+
+	// create new post with args
 	async create(post: CreatePostArgs): Promise<Post> {
 		return this.repository.create(post);
 	}
 
+	// find post with user and comments using postId
 	async findOneById(postId: string): Promise<PostDetail> {
+		// user aggregation lookup for making data as graphql schema 
 		return this.repository.aggregate([
 			{ $match: { _id: Types.ObjectId(postId) } },
 			{
@@ -78,7 +85,8 @@ export class PostService {
 		]);
 	}
 
-	async findAll(recipesArgs: PostsArgs): Promise<PostDetail[]> {
+	// find all post with user and comments
+	async findAll(postArgs: PostsArgs): Promise<PostDetail[]> {
 		return this.repository.aggregate([
 			{
 				$lookup: {
@@ -136,8 +144,12 @@ export class PostService {
 			},
 		]);
 	}
+
+	// remove post based on postId
 	async deletePost(id: string): Promise<boolean> {
+		// delete post with postId
 		await this.repository.deleteMany({ _id: Types.ObjectId(id) });
+		// delete all comments on post
 		await this.commentRepo.deleteMany({ postId: Types.ObjectId(id) });
 		return true;
 	}

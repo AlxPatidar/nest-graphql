@@ -15,11 +15,16 @@ const serialize = {
 };
 
 const schemaOptions = {
+  // collection name
   collection: 'comments',
+  // serialize object
   toObject: serialize,
+  // serialize json
   toJSON: serialize,
+  // enable created and updated
   timestamps: true,
-  versionKey: false
+  // disable _v
+  versionKey: false,
 };
 
 @modelOptions({ schemaOptions })
