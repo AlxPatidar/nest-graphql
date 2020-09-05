@@ -2,7 +2,7 @@ import { plainToClass } from 'class-transformer';
 import { Model } from 'mongoose';
 import { DocumentType, index, modelOptions, prop } from '@typegoose/typegoose';
 
-import { BaseSchema } from '../../config/mongo/base.entity';
+import { BaseSchema } from '../../config/common/base.entity';
 
 const serialize = {
   getters: true,

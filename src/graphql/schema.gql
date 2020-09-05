@@ -2,12 +2,17 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Post {
-  _id: String!
+type LatLong {
+  lat: Float!
+  long: Float!
+}
+
+type Address {
+  street: String!
   createdAt: DateTime!
-  updatedAt: DateTime!
-  title: String!
-  body: String
+  city: String!
+  zipcode: String!
+  geo: LatLong!
 }
 
 """
@@ -15,7 +20,84 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type User {
+  _id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String!
+  email: String!
+  website: String!
+  phone: String!
+  address: Address!
+  body: String
+}
+
+type Comment {
+  _id: String!
+  postId: String!
+  userId: String!
+  comment: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  post: Post!
+  user: User!
+}
+
+type Post {
+  _id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  title: String!
+  body: String
+  comments: [Comment!]!
+  user: User!
+}
+
 type Query {
-  posts: [Post!]!
+  post(id: String!): Post!
+  posts(skip: Int = 0, take: Int = 25): [Post!]!
   hello: String!
+  user(id: String!): User!
+  users(skip: Int = 0, take: Int = 25): [User!]!
+  comment(id: String!): Comment!
+  comments(skip: Int = 0, take: Int = 25): [Comment!]!
+}
+
+type Mutation {
+  createPost(post: CreatePostArgs!): Boolean!
+  createUser(user: CreateUserArgs!): Boolean!
+  createComment(comment: CreateCommentArgs!): Boolean!
+}
+
+input CreatePostArgs {
+  userId: String!
+  title: String!
+  body: String
+}
+
+input CreateUserArgs {
+  name: String!
+  email: String!
+  website: String
+  phone: String
+  address: AddressArgs
+}
+
+input AddressArgs {
+  suite: String
+  street: String
+  city: String
+  zipcode: String
+  geo: LatLongArgs
+}
+
+input LatLongArgs {
+  lat: Float!
+  long: Float!
+}
+
+input CreateCommentArgs {
+  userId: String!
+  postId: String!
+  comment: String!
 }
