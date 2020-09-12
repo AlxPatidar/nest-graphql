@@ -68,12 +68,17 @@
       "ts"
     ],
     "rootDir": "src",
-    "testRegex": ".spec.ts$",
+    "testRegex": ".(e2e-spec|spec|test).ts$",
+    "setupFilesAfterEnv": ["../test/jest.setup.ts"],
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
     },
     "coverageDirectory": "./coverage",
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "moduleNameMapper": {
+      "@Logger/(.*)$": "<rootDir>/shared/Logger/$1",
+      "@Pipes/(.*)$": "<rootDir>/shared/pipes/$1"
+    }
   },
   "lint-staged": {
     "*.{ts, js,jsx}": [

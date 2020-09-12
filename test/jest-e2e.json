@@ -2,7 +2,8 @@
   "moduleFileExtensions": ["js", "json", "ts"],
   "rootDir": ".",
   "testEnvironment": "node",
-  "testRegex": ".e2e-spec.ts$",
+  "testRegex": ".(e2e-spec|test).ts$",
+  "setupFilesAfterEnv": ["../test/jest.setup.ts"],
   "globals": {
     "ts-jest": {
       "tsConfigFile": "tsconfig.json",
