@@ -3,7 +3,7 @@ import { Http2Server } from 'http2';
 
 import { TaskService } from '../task.service';
 
-describe('Task E2E Test', () => {
+describe('Task API E2E Test', () => {
     let service: TaskService
     let server: Http2Server
     beforeEach(() => {
