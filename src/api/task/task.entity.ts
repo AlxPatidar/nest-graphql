@@ -1,6 +1,6 @@
 import { plainToClass } from 'class-transformer';
 import { Model } from 'mongoose';
-import { DocumentType, index, modelOptions, prop } from '@typegoose/typegoose';
+import { DocumentType, modelOptions, prop } from '@typegoose/typegoose';
 
 import { BaseSchema } from '../../config/common/base.entity';
 
@@ -15,10 +15,16 @@ const serialize = {
 };
 
 const schemaOptions = {
-  collection: 'logs',
+  // collection name
+  collection: 'tasks',
+  // serialize object
   toObject: serialize,
+  // serialize json
   toJSON: serialize,
+  // enable created and updated
   timestamps: true,
+  // disable _v
+  versionKey: false,
 };
 
 @modelOptions({ schemaOptions })

@@ -1,7 +1,7 @@
 import { plainToClass } from 'class-transformer';
 import { Model, Types } from 'mongoose';
 
-import { DocumentType, index, modelOptions, prop } from '@typegoose/typegoose';
+import { DocumentType, modelOptions, prop } from '@typegoose/typegoose';
 
 import { BaseSchema } from '../../../config/common/base.entity';
 

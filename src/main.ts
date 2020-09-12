@@ -22,7 +22,7 @@ async function bootstrap() {
   app.setBaseViewsDir(join(__dirname, '..', 'views'));
   app.setViewEngine('hbs');
 
-  // Custome validation on request using pipe and class-validator
+  // Custom validation on request using pipe and class-validator
   app.useGlobalPipes(new CustomValidatePipe());
 
   Logger.log(`🚀  Server ready at http://localhost:${port} `, 'ServerStarted');
