@@ -12,7 +12,7 @@ export class CommentResolver {
 	constructor(
 		private readonly commentService: CommentService,
 		@Inject('REDIS_PUB_SUB_PROVIDER') private readonly redisPubSub: RedisPubSub
-	) {}
+	) { }
 
 	/*
 	 * Comment Resolver
@@ -37,8 +37,9 @@ export class CommentResolver {
 	public async createComment(
 		@Args('comment') createCommentArgs: CreateCommentArgs
 	): Promise<Comment> {
-		this.redisPubSub.publish('commentAdded', { 'commentAdded': { postId: "postId"} })
-		return await this.commentService.create(createCommentArgs);
+		const comment = await this.commentService.create(createCommentArgs);
+		this.redisPubSub.publish('commentAdded', { 'commentAdded': comment })
+		return comment
 	}
 
 	// mutation for delete comment
@@ -51,7 +52,7 @@ export class CommentResolver {
 	// call subscription on create new comment
 	@Subscription(returns => Comment, {
 		name: 'commentAdded',
-		 filter: (payload, variables) => payload.commentAdded.postId === variables.postId,
+		filter: (payload, variables) => payload.commentAdded.postId === variables.postId,
 	})
 	public async commentAdded(@Args('postId') postId: string) {
 		return this.redisPubSub.asyncIterator('commentAdded');

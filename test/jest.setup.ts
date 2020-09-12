@@ -5,7 +5,6 @@ import { AppModule } from '../src/app/app.module';
 let app: NestExpressApplication;
 
 beforeAll(async () => {
-  console.log("Jest Setup Initialize")
   const moduleFixture: TestingModule = await Test.createTestingModule({
     imports: [AppModule],
   }).compile();
@@ -15,6 +14,6 @@ beforeAll(async () => {
 })
 
 afterAll(async () => {
-  console.log("Jest Setup Close")
+  // on end of test close app
   await app.close()
 })
