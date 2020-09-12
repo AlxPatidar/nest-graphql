@@ -3,7 +3,7 @@ import { map } from 'lodash';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloServerTestClient, createTestClient } from 'apollo-server-testing';
 
-describe('User API E2E Test', () => {
+describe('User graphql E2E Test', () => {
     let apolloClient: ApolloServerTestClient;
     beforeEach(async () => {
         const module: GraphQLModule = global.app.get<GraphQLModule>(GraphQLModule);
