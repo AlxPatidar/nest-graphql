@@ -1,10 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import Mongoose from 'mongoose'
+import * as IORedis from 'ioredis-mock'
 import { MongoMemoryServer } from 'mongodb-memory-server';
+import { RedisPubSub } from 'graphql-redis-subscriptions';
 
-import { MongoService } from '../src/config/mongo/mongo';
 import { AppModule } from '../src/app/app.module';
+import { RedisService } from '../src/config/redis/redis';
+import { MongoService } from '../src/config/mongo/mongo';
 
 let app: NestExpressApplication;
 let mongoServer: MongoMemoryServer;
@@ -32,6 +35,17 @@ const mongooseConnection = async (nestApp: NestExpressApplication) => {
     }
   }
 }
+// create redis instance on redis mock lib
+const redis = new IORedis()
+// override getConfig function of redis services
+const mockRedisConfig = {
+  async getConfig() {
+    return new RedisPubSub({
+      publisher: redis.createConnectedClient(),
+      subscriber: redis,
+    })
+  },
+}
 
 beforeAll(async () => {
   // create mongo memory replica set instance
@@ -41,6 +55,8 @@ beforeAll(async () => {
   })
     .overrideProvider(MongoService)
     .useValue(mockMongoConfig)
+    .overrideProvider(RedisService)
+    .useValue(mockRedisConfig)
     .compile();
   app = moduleFixture.createNestApplication();
   global.app = app
