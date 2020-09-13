@@ -1,15 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import Mongoose from 'mongoose'
-import { MongoMemoryReplSet } from 'mongodb-memory-server-global'
+import { MongoMemoryServer } from 'mongodb-memory-server';
 
 import { MongoService } from '../src/config/mongo/mongo';
 import { AppModule } from '../src/app/app.module';
 
 let app: NestExpressApplication;
-let mongoServer: MongoMemoryReplSet;
+let mongoServer: MongoMemoryServer;
 
+// mocking mongo service configuration using override getConfig function
 const mockMongoConfig = {
   async getConfig() {
     const mongoUri = await mongoServer.getConnectionString()
@@ -22,7 +22,8 @@ const mockMongoConfig = {
     }
   },
 }
-const mongooseConnection = async (nestApp: INestApplication) => {
+// mongoose connection with every model of typegoose
+const mongooseConnection = async (nestApp: NestExpressApplication) => {
   const connection = nestApp.get('DefaultTypegooseConnection')
   for (const modelName in connection.models) {
     if (connection.models.hasOwnProperty(modelName)) {
@@ -34,11 +35,7 @@ const mongooseConnection = async (nestApp: INestApplication) => {
 
 beforeAll(async () => {
   // create mongo memory replica set instance
-  mongoServer = new MongoMemoryReplSet({
-    replSet: { storageEngine: 'wiredTiger' },
-  })
-  // run replica server
-  await mongoServer.waitUntilRunning()
+  mongoServer = await MongoMemoryServer.create();
   const moduleFixture: TestingModule = await Test.createTestingModule({
     imports: [AppModule],
   })
@@ -52,14 +49,11 @@ beforeAll(async () => {
 })
 
 afterAll(async () => {
-  jest.resetAllMocks()
-  jest.restoreAllMocks()
-  // on end of test close app
-  await app.close()
   const connection: Mongoose.Connection = app.get('DefaultTypegooseConnection')
-  if (connection) {
-    await connection.dropDatabase()
-  }
+  // close connection
+  if (connection) await connection.close()
   // remove mongo replica
   await mongoServer.stop()
+  // on end of test close app
+  await app.close()
 })

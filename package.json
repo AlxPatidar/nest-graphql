@@ -37,7 +37,7 @@
     "hbs": "4.0.6",
     "ioredis": "^4.17.3",
     "module-alias": "2.2.2",
-    "mongodb-memory-server-global": "^6.7.4",
+    "mongodb-memory-server": "^6.7.5",
     "mongoose": "^5.10.2",
     "nestjs-typegoose": "^7.1.34",
     "reflect-metadata": "^0.1.13",
